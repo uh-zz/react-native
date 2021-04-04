@@ -44,13 +44,39 @@ export default function App() {
       <View style={styles.container}>
         <Input addEet={addEet} />
         <View style={styles.content}>
-          <Text style={styles.contentText}>{JSON.stringify(eet)}</Text>
+          {eet.map((elem, index) => (
+            <Eet key={index} text={elem.text} />
+          ))}
         </View>
         <StatusBar style="light" />
       </View>
     </SafeAreaView>
   );
 }
+
+const eetStyles = StyleSheet.create({
+  container: {
+    borderWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderColor: "rgb(29, 161, 242)",
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  text: {
+    color: "white",
+    fontSize: 16,
+  },
+});
+function Eet(props) {
+  const { text } = props;
+  return (
+    <View style={eetStyles.container}>
+      <Text style={eetStyles.text}>{text}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

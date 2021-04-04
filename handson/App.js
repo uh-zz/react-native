@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
+  FlatList,
 } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
 
 function Input(props) {
   const [text, setText] = useState("");
@@ -35,7 +38,14 @@ export default function App() {
     const newEet = [].concat(eet);
     newEet.push({
       text,
+      id: Date.now(),
+      like: false,
     });
+    setEet(newEet);
+  };
+  const onLike = (index) => {
+    const newEet = [].concat(eet);
+    newEet[index].like = !newEet[index].like;
     setEet(newEet);
   };
 
@@ -44,9 +54,18 @@ export default function App() {
       <View style={styles.container}>
         <Input addEet={addEet} />
         <View style={styles.content}>
-          {eet.map((elem, index) => (
-            <Eet key={index} text={elem.text} />
-          ))}
+          <FlatList
+            data={eet}
+            renderItem={({ item, index }) => (
+              <Eet
+                text={item.text}
+                like={item.like}
+                onLike={() => onLike(index)}
+              />
+            )}
+            keyExtractor={(item) => `${item.id}`}
+            contentContainerStyle={styles.contentContainer}
+          />
         </View>
         <StatusBar style="light" />
       </View>
@@ -67,12 +86,33 @@ const eetStyles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
+  actionContainer: {
+    borderTopWidth: 1,
+    borderTopColor: "#aaa",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    paddingTop: 5,
+    marginTop: 20,
+  },
 });
 function Eet(props) {
-  const { text } = props;
+  const { text, like, onLike } = props;
   return (
     <View style={eetStyles.container}>
       <Text style={eetStyles.text}>{text}</Text>
+      <View style={eetStyles.actionContainer}>
+        <TouchableOpacity onPress={onLike}>
+          {like ? (
+            <Ionicons
+              name="heart-circle-sharp"
+              size={22}
+              color="rgb(252, 108, 133)"
+            />
+          ) : (
+            <Ionicons name="ios-heart-circle-outline" size={22} color="#aaa" />
+          )}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -113,9 +153,13 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
+    flex: 1,
   },
   contentText: {
     color: "white",
     fontSize: 22,
+  },
+  contentContainer: {
+    paddingBottom: 50,
   },
 });

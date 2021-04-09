@@ -36,10 +36,12 @@ export default function App() {
   const [eet, setEet] = useState([]);
   const addEet = (text) => {
     const newEet = [].concat(eet);
+    const nowDate = new Date();
     newEet.unshift({
       text,
       id: `${Date.now()}`,
       like: false,
+      date: nowDate.toLocaleString(),
     });
     console.log(newEet);
     setEet(newEet);
@@ -47,6 +49,12 @@ export default function App() {
   const onLike = (index) => {
     const newEet = [].concat(eet);
     newEet[index].like = !newEet[index].like;
+    setEet(newEet);
+  };
+
+  const onDelete = (index) => {
+    const newEet = [].concat(eet);
+    newEet.splice(index, 1);
     setEet(newEet);
   };
 
@@ -62,6 +70,8 @@ export default function App() {
                 text={item.text}
                 like={item.like}
                 onLike={() => onLike(index)}
+                date={item.date}
+                onDelete={() => onDelete(index)}
               />
             )}
             keyExtractor={(item) => `${item.id}`}
@@ -122,10 +132,13 @@ const styles = StyleSheet.create({
 });
 
 function Eet(props) {
-  const { text, like, onLike } = props;
+  const { text, like, onLike, date, onDelete } = props;
   return (
     <View style={eetStyles.container}>
       <Text style={eetStyles.text}>{text}</Text>
+      <TouchableOpacity onPress={onDelete}>
+        <Ionicons name="close" size={22} color="rgb(252, 108, 133)" />
+      </TouchableOpacity>
       <View style={eetStyles.actionContainer}>
         <TouchableOpacity onPress={onLike}>
           {like ? (
@@ -138,6 +151,7 @@ function Eet(props) {
             <Ionicons name="ios-heart-circle-outline" size={22} color="#aaa" />
           )}
         </TouchableOpacity>
+        <Text style={eetStyles.date}>{date}</Text>
       </View>
     </View>
   );
@@ -151,6 +165,8 @@ const eetStyles = StyleSheet.create({
     borderColor: "rgb(29, 161, 242)",
     marginBottom: 10,
     borderRadius: 5,
+    // flexDirection: "row",
+    // justifyContent: "space-between",
   },
   text: {
     color: "white",
@@ -159,9 +175,13 @@ const eetStyles = StyleSheet.create({
   actionContainer: {
     borderTopWidth: 1,
     borderTopColor: "#aaa",
-    alignItems: "flex-end",
-    justifyContent: "center",
+    // alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingTop: 5,
     marginTop: 20,
+  },
+  date: {
+    color: "white",
   },
 });

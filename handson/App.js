@@ -13,10 +13,10 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 function Input(props) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState("何か入力してください");
   const onPress = () => {
     props.addEet(text);
-    setText("");
+    setText("何か入力してください");
   };
   return (
     <View style={styles.inputContainer}>
@@ -36,11 +36,12 @@ export default function App() {
   const [eet, setEet] = useState([]);
   const addEet = (text) => {
     const newEet = [].concat(eet);
-    newEet.push({
+    newEet.unshift({
       text,
       id: Date.now(),
       like: false,
     });
+    console.log(newEet);
     setEet(newEet);
   };
   const onLike = (index) => {
@@ -70,50 +71,6 @@ export default function App() {
         <StatusBar style="light" />
       </View>
     </SafeAreaView>
-  );
-}
-
-const eetStyles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderColor: "rgb(29, 161, 242)",
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  text: {
-    color: "white",
-    fontSize: 16,
-  },
-  actionContainer: {
-    borderTopWidth: 1,
-    borderTopColor: "#aaa",
-    alignItems: "flex-end",
-    justifyContent: "center",
-    paddingTop: 5,
-    marginTop: 20,
-  },
-});
-function Eet(props) {
-  const { text, like, onLike } = props;
-  return (
-    <View style={eetStyles.container}>
-      <Text style={eetStyles.text}>{text}</Text>
-      <View style={eetStyles.actionContainer}>
-        <TouchableOpacity onPress={onLike}>
-          {like ? (
-            <Ionicons
-              name="heart-circle-sharp"
-              size={22}
-              color="rgb(252, 108, 133)"
-            />
-          ) : (
-            <Ionicons name="ios-heart-circle-outline" size={22} color="#aaa" />
-          )}
-        </TouchableOpacity>
-      </View>
-    </View>
   );
 }
 
@@ -161,5 +118,50 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingBottom: 50,
+  },
+});
+
+function Eet(props) {
+  const { text, like, onLike } = props;
+  return (
+    <View style={eetStyles.container}>
+      <Text style={eetStyles.text}>{text}</Text>
+      <View style={eetStyles.actionContainer}>
+        <TouchableOpacity onPress={onLike}>
+          {like ? (
+            <Ionicons
+              name="heart-circle-sharp"
+              size={22}
+              color="rgb(252, 108, 133)"
+            />
+          ) : (
+            <Ionicons name="ios-heart-circle-outline" size={22} color="#aaa" />
+          )}
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const eetStyles = StyleSheet.create({
+  container: {
+    borderWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderColor: "rgb(29, 161, 242)",
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  text: {
+    color: "white",
+    fontSize: 16,
+  },
+  actionContainer: {
+    borderTopWidth: 1,
+    borderTopColor: "#aaa",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    paddingTop: 5,
+    marginTop: 20,
   },
 });

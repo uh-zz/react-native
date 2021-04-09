@@ -292,8 +292,6 @@ const eetStyles = StyleSheet.create({
     borderColor: "rgb(29, 161, 242)",
     marginBottom: 10,
     borderRadius: 5,
-    // flexDirection: "row",
-    // justifyContent: "space-between",
   },
   subContainer: {
     flexDirection: "row",
@@ -306,7 +304,6 @@ const eetStyles = StyleSheet.create({
   actionContainer: {
     borderTopWidth: 1,
     borderTopColor: "#aaa",
-    // alignItems: "flex-end",
     flexDirection: "row",
     justifyContent: "space-between",
     paddingTop: 5,

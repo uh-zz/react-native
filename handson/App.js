@@ -13,10 +13,10 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 function Input(props) {
-  const [text, setText] = useState("何か入力してください");
+  const [text, setText] = useState("");
   const onPress = () => {
-    props.addEet(text);
-    setText("何か入力してください");
+    text ? props.addEet(text) : null;
+    setText("");
   };
   return (
     <View style={styles.inputContainer}>
@@ -38,7 +38,7 @@ export default function App() {
     const newEet = [].concat(eet);
     newEet.unshift({
       text,
-      id: Date.now(),
+      id: `${Date.now()}`,
       like: false,
     });
     console.log(newEet);

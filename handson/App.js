@@ -267,6 +267,7 @@ function Eet(props) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TextInput
+              autoCapitalize="none"
               onChangeText={(_modalText) => setModalText(_modalText)}
               value={modalText}
               style={styles.modalText}

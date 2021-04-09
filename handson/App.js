@@ -27,6 +27,7 @@ function Input(props) {
   return (
     <View style={styles.inputContainer}>
       <TextInput
+        autoCapitalize="none"
         style={styles.input}
         onChangeText={(_text) => setText(_text)}
         value={text}

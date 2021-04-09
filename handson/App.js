@@ -8,9 +8,10 @@ import {
   SafeAreaView,
   TextInput,
   FlatList,
-  Modal,
   Pressable,
 } from "react-native";
+
+import Modal from "react-native-modal";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -57,6 +58,13 @@ export default function App() {
     setEet(newEet);
   };
 
+  // モーダルで編集したメッセージを更新する
+  const updateEet = (index, text) => {
+    const newEet = [].concat(eet);
+    newEet[index].text = text;
+    setEet(newEet);
+  };
+
   // いいね機能
   const onLike = (index) => {
     const newEet = [].concat(eet);
@@ -80,11 +88,13 @@ export default function App() {
             data={eet}
             renderItem={({ item, index }) => (
               <Eet
+                index={index}
                 text={item.text}
                 like={item.like}
                 onLike={() => onLike(index)}
                 date={item.date}
                 onDelete={() => onDelete(index)}
+                updateEet={updateEet}
               />
             )}
             keyExtractor={(item) => `${item.id}`}
@@ -147,6 +157,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+    backgroundColor: "rgba(38, 45, 52, 1)",
+    opacity: 0.7,
+    borderRadius: 20,
   },
   modalView: {
     margin: 20,
@@ -175,13 +188,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
+    flexDirection: "row",
     marginBottom: 15,
-    textAlign: "center",
+    borderColor: "rgb(29, 161, 242)",
+    borderWidth: 2,
+    marginRight: 10,
+    borderRadius: 10,
+    textAlign: "left",
+    paddingHorizontal: 10,
+    fontSize: 16,
   },
 });
 
 function Eet(props) {
-  const { text, like, onLike, date, onDelete } = props;
+  const { index, text, like, onLike, date, onDelete } = props;
 
   // モーダル用
   const [modalVisible, setModalVisible] = useState(false);
@@ -197,7 +217,15 @@ function Eet(props) {
   };
 
   // モーダルのテキスト状態保持
-  const [modalText, setModalText] = useState("");
+  const [modalText, setModalText] = useState(text);
+
+  // モーダルボタン押したときの挙動
+  const onModalPress = () => {
+    modalText ? props.updateEet(index, modalText) : null;
+    setModalText(text);
+    closeModal();
+  };
+
   return (
     <View>
       <TouchableOpacity style={eetStyles.container} onPress={() => showModal()}>
@@ -237,13 +265,17 @@ function Eet(props) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <TextInput style={styles.modalText}>Hello World!</TextInput>
+            <TextInput
+              onChangeText={(_modalText) => setModalText(_modalText)}
+              value={modalText}
+              style={styles.modalText}
+            />
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => closeModal()}
+              onPress={onModalPress}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={styles.textStyle}>ツ○ートの更新</Text>
             </Pressable>
           </View>
         </View>

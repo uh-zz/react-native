@@ -177,6 +177,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalTextView: {
+    width: 200,
+  },
   buttonOpen: {
     backgroundColor: "#F194FF",
   },
@@ -189,7 +192,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    flexDirection: "row",
     marginBottom: 15,
     borderColor: "rgb(29, 161, 242)",
     borderWidth: 2,
@@ -223,7 +225,7 @@ function Eet(props) {
   // モーダルボタン押したときの挙動
   const onModalPress = () => {
     modalText ? props.updateEet(index, modalText) : null;
-    setModalText(text);
+    setModalText(modalText);
     closeModal();
   };
 
@@ -264,15 +266,16 @@ function Eet(props) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+        <TouchableOpacity style={styles.centeredView} onPress={closeModal}>
           <View style={styles.modalView}>
-            <TextInput
-              autoCapitalize="none"
-              onChangeText={(_modalText) => setModalText(_modalText)}
-              value={modalText}
-              style={styles.modalText}
-            />
-
+            <View style={styles.modalTextView}>
+              <TextInput
+                autoCapitalize="none"
+                onChangeText={(_modalText) => setModalText(_modalText)}
+                value={modalText}
+                style={styles.modalText}
+              />
+            </View>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={onModalPress}
@@ -280,7 +283,7 @@ function Eet(props) {
               <Text style={styles.textStyle}>ツ○ートの更新</Text>
             </Pressable>
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     </View>
   );
